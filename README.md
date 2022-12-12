@@ -29,7 +29,7 @@ set:
   columns:
   - name: some_column_name
     xpath: //SomeRoot/SomeNode/SomeElement
-	optional: true # file will not be dropped if data is missing - csv field will be blank
+    optional: true # file will not be dropped if data is missing - csv field will be blank
   - name: another_column_name
     xpath: //SomeRoot/AnotherNode/AnotherElement[/@SomeAttribute='SomeValue']
 - messageType: another_message_type
