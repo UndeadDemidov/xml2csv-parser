@@ -21,6 +21,10 @@ The xpath expression must return the result as the single value of a specific fi
 ## Use
 `xml2csv-parser -p ./xml -s ./parsing.yaml`
 
+It is possible to copy files that was added to csv file.
+You should mention that it will slow down file parsing (ToDo implement copy in goroutines).
+`xml2csv-parser -p ./xml -s ./parsing.yaml --copy ~/copy`
+
 ### Example of yaml config for parsing:
 ```yaml
 includeFilename: true # filename will be added in last field

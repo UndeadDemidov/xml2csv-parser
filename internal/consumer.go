@@ -13,11 +13,12 @@ type Consumer struct {
 	csvWriter *CsvWriter
 	filenames *chan string
 	jobs      chan string
+	copyPath  string
 }
 
 // NewConsumer creates instance of Consumer with given parameters.
-func NewConsumer(xp *XMLParser, cw *CsvWriter, l *chan string, j chan string) *Consumer {
-	c := &Consumer{xmlParser: xp, csvWriter: cw, filenames: l, jobs: j}
+func NewConsumer(xp *XMLParser, cw *CsvWriter, l *chan string, j chan string, copyPath string) *Consumer {
+	c := &Consumer{xmlParser: xp, csvWriter: cw, filenames: l, jobs: j, copyPath: copyPath}
 	c.csvWriter.WriteToFile(xp.GetHeader())
 	return c
 }
@@ -36,6 +37,12 @@ func (c *Consumer) Work(wg *sync.WaitGroup) {
 		}
 		if line != nil {
 			c.csvWriter.WriteToFile(line)
+			if c.copyPath != "" {
+				// ToDo make copy in goroutines.
+				_, err = copySrc(job, c.copyPath)
+				log.Println(err)
+				return
+			}
 		}
 	}
 }

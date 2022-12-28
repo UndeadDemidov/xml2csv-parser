@@ -20,6 +20,7 @@ import (
 var (
 	cfgFile    string
 	path       string
+	copyPath   string
 	columnSet  string
 	outFile    string
 	nConsumers int
@@ -82,7 +83,7 @@ set:
 		if err != nil {
 			log.Fatalln(err)
 		}
-		c := internal.NewConsumer(setCfg.CreateCompiled(), writer, &files, make(chan string, nConsumers))
+		c := internal.NewConsumer(setCfg.CreateCompiled(), writer, &files, make(chan string, nConsumers), copyPath)
 
 		go p.Produce()
 		go c.Consume(ctx)
@@ -120,7 +121,8 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.xml2cv-parser.yaml)")
-	rootCmd.Flags().StringVarP(&path, "path", "p", wd, "path for Nestle inbound xml's. Only files with 'xml' extensions will be processed")
+	rootCmd.Flags().StringVarP(&path, "path", "p", wd, "path for inbound xml's. Only files with 'xml' extensions will be processed")
+	rootCmd.Flags().StringVarP(&copyPath, "copy", "c", "", "path for copying successfully processed files")
 	rootCmd.Flags().StringVarP(&columnSet, "column_set", "s", "", "config file for xml parsing in .yaml format")
 	rootCmd.Flags().StringVarP(&outFile, "out_file", "o", "result.csv", "out filename for csv to where list of orders will be stored")
 	rootCmd.Flags().IntVarP(&nConsumers, "threads", "t", 10, "number of consumers for concurrency executions") //nolint:gomnd
