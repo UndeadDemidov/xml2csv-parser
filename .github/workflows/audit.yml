@@ -1,4 +1,4 @@
-name: magnit-xlsx-converter
+name: xls2csv-parser
 
 on:
   push:
