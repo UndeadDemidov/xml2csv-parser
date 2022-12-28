@@ -29,7 +29,7 @@ type XMLParser struct {
 
 // GetHeader returns header for csv file.
 func (xp *XMLParser) GetHeader() []string {
-	s := make([]string, 0, 4)
+	s := make([]string, 0, 4) //nolint:gomnd
 	for _, cName := range xp.Set[0].Columns {
 		s = append(s, cName.Name)
 	}
@@ -59,7 +59,7 @@ func (xp *XMLParser) Parse(filename string) ([]string, error) {
 
 	for _, cf := range xp.Set {
 		allFound := true
-		line := make([]string, 0, 4)
+		line := make([]string, 0, 4) //nolint:gomnd
 		for _, col := range cf.Columns {
 			val, ok := col.XPath.String(root)
 			if !ok && !col.Optional {

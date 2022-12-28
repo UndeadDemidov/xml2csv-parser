@@ -25,7 +25,7 @@ var (
 	nConsumers int
 )
 
-// rootCmd represents the base command when called without any subcommands
+// rootCmd represents the base command when called without any subcommands.
 var rootCmd = &cobra.Command{
 	Use:   "xml2cv-parser",
 	Short: "xml2cv-parser creates list of orders in csv file from set of inbound Nestle xml files.",
@@ -75,7 +75,7 @@ set:
 		println("Started in path", path, "at", t.String())
 
 		runtime.GOMAXPROCS(runtime.NumCPU())
-		files := make(chan string, 4)
+		files := make(chan string, 4) //nolint:gomnd
 
 		p := internal.NewProducer(path, ".xml", &files, quit)
 		writer, err := internal.NewCsvWriter(outFile)
@@ -123,7 +123,7 @@ func init() {
 	rootCmd.Flags().StringVarP(&path, "path", "p", wd, "path for Nestle inbound xml's. Only files with 'xml' extensions will be processed")
 	rootCmd.Flags().StringVarP(&columnSet, "column_set", "s", "", "config file for xml parsing in .yaml format")
 	rootCmd.Flags().StringVarP(&outFile, "out_file", "o", "result.csv", "out filename for csv to where list of orders will be stored")
-	rootCmd.Flags().IntVarP(&nConsumers, "threads", "t", 10, "number of consumers for concurrency executions")
+	rootCmd.Flags().IntVarP(&nConsumers, "threads", "t", 10, "number of consumers for concurrency executions") //nolint:gomnd
 }
 
 // initConfig reads in config file and ENV variables if set.
