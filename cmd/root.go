@@ -27,8 +27,8 @@ var (
 
 // rootCmd represents the base command when called without any subcommands.
 var rootCmd = &cobra.Command{
-	Use:   "xml2cv-parser",
-	Short: "xml2cv-parser creates list of orders in csv file from set of inbound Nestle xml files.",
+	Use:   "xml2csv-parser",
+	Short: "xml2csv-parser creates list of orders in csv file from set of inbound Nestle xml files.",
 	Long: `  The tool parses any set of fields from a list of xml files via xpath expressions in a yaml configuration file,
 which is passed by -s <path/file_name> flag.
   By default the files are filtered for missing data, but you can configure mandatory output in csv result even if the data is missing.
