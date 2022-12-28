@@ -10,22 +10,26 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// Column represents output column with XPath expression that will be processed against source xml file.
 type Column struct {
 	Name     string `yaml:"name"`
 	XPath    string `yaml:"xpath"`
 	Optional bool   `yaml:"optional,omitempty"`
 }
 
+// Line describes type of line (type of file or message).
 type Line struct {
 	MessageType string   `yaml:"messageType"`
 	Columns     []Column `yaml:"columns"`
 }
 
+// XMLParser is proxy for creations XMLParser from config file.
 type XMLParser struct {
 	IncludeFilename bool   `yaml:"includeFilename,omitempty"`
 	Set             []Line `yaml:"set"`
 }
 
+// Load loads config file with given filename.
 func (xp *XMLParser) Load(filename string) (err error) {
 	var yamlBytes []byte
 	if filename == "" {
@@ -43,6 +47,7 @@ func (xp *XMLParser) Load(filename string) (err error) {
 	return nil
 }
 
+// CreateCompiled creates compiled XMLParser.
 func (xp *XMLParser) CreateCompiled() *internal.XMLParser {
 	cmpLines := make([]internal.Line, 0, len(xp.Set))
 	for _, line := range xp.Set {

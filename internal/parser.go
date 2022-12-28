@@ -8,26 +8,26 @@ import (
 	"gopkg.in/xmlpath.v2"
 )
 
+// Column represents output column with XPath expression that will be processed against source xml file.
 type Column struct {
 	Name     string
 	XPath    *xmlpath.Path
 	Optional bool
 }
 
+// Line describes type of line (type of file or message).
 type Line struct {
 	MessageType string
 	Columns     []Column
 }
 
+// XMLParser intended to search and extract data from xml file to csv.
 type XMLParser struct {
 	IncludeFilename bool
 	Set             []Line
 }
 
-func NewXmlParser(s []Line) *XMLParser {
-	return &XMLParser{Set: s}
-}
-
+// GetHeader returns header for csv file.
 func (xp *XMLParser) GetHeader() []string {
 	s := make([]string, 0, 4)
 	for _, cName := range xp.Set[0].Columns {
@@ -40,12 +40,17 @@ func (xp *XMLParser) GetHeader() []string {
 	return s
 }
 
+// Parse parses xml file and returns line of fields for csv.
 func (xp *XMLParser) Parse(filename string) ([]string, error) {
 	file, err := os.Open(filename)
 	if err != nil {
 		log.Fatalf("can't open file %s: %s", filename, err)
 	}
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	root, err := xmlpath.Parse(file)
 	if err != nil {

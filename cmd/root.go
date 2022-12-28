@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"xml2csv-parser/cfg"
-	. "xml2csv-parser/internal"
+	"xml2csv-parser/internal"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -77,12 +77,12 @@ set:
 		runtime.GOMAXPROCS(runtime.NumCPU())
 		files := make(chan string, 4)
 
-		p := NewProducer(path, ".xml", &files, quit)
-		writer, err := NewCsvWriter(outFile)
+		p := internal.NewProducer(path, ".xml", &files, quit)
+		writer, err := internal.NewCsvWriter(outFile)
 		if err != nil {
 			log.Fatalln(err)
 		}
-		c := NewConsumer(setCfg.CreateCompiled(), writer, &files, make(chan string, nConsumers))
+		c := internal.NewConsumer(setCfg.CreateCompiled(), writer, &files, make(chan string, nConsumers))
 
 		go p.Produce()
 		go c.Consume(ctx)
@@ -146,6 +146,9 @@ func initConfig() {
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+		_, err = fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+		if err != nil {
+			panic(err)
+		}
 	}
 }

@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// Consumer consumes a batch xml files to process then concurently.
 type Consumer struct {
 	xmlParser *XMLParser
 	csvWriter *CsvWriter
@@ -14,12 +15,14 @@ type Consumer struct {
 	jobs      chan string
 }
 
+// NewConsumer creates instance of Consumer with given parameters.
 func NewConsumer(xp *XMLParser, cw *CsvWriter, l *chan string, j chan string) *Consumer {
 	c := &Consumer{xmlParser: xp, csvWriter: cw, filenames: l, jobs: j}
 	c.csvWriter.WriteToFile(xp.GetHeader())
 	return c
 }
 
+// Work does work.
 func (c *Consumer) Work(wg *sync.WaitGroup) {
 	defer wg.Done()
 	for job := range c.jobs {
@@ -37,6 +40,7 @@ func (c *Consumer) Work(wg *sync.WaitGroup) {
 	}
 }
 
+// Consume consumes workload and pushes for workers.
 func (c *Consumer) Consume(ctx context.Context) {
 	ticker := time.NewTicker(time.Second)
 	for {
