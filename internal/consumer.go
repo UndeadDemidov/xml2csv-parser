@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// Consumer consumes a batch xml files to process then concurently.
+// Consumer consumes a batch xml files to process then concurrently.
 type Consumer struct {
 	xmlParser *XMLParser
 	csvWriter *CsvWriter
@@ -38,7 +38,6 @@ func (c *Consumer) Work(wg *sync.WaitGroup) {
 		if line != nil {
 			c.csvWriter.WriteToFile(line)
 			if c.copyPath != "" {
-				// ToDo make copy in goroutines.
 				_, err = copySrc(job, c.copyPath)
 				log.Println(err)
 				return
