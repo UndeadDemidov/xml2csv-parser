@@ -54,8 +54,9 @@ func (xp *XMLParser) CreateCompiled() *internal.XMLParser {
 		cmpCols := make([]internal.Column, 0, len(line.Columns))
 		for _, col := range line.Columns {
 			cmpCols = append(cmpCols, internal.Column{
-				Name:  col.Name,
-				XPath: xmlpath.MustCompile(col.XPath),
+				Name:     col.Name,
+				XPath:    xmlpath.MustCompile(col.XPath),
+				Optional: col.Optional,
 			})
 		}
 		cmpLines = append(cmpLines, internal.Line{

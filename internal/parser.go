@@ -47,7 +47,7 @@ func (xp *XMLParser) Parse(filename string) ([]string, error) {
 		log.Fatalf("can't open file %s: %s", filename, err)
 	}
 	defer func() {
-		if err := file.Close(); err != nil {
+		if err = file.Close(); err != nil {
 			log.Fatal(err)
 		}
 	}()
